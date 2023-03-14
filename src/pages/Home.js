@@ -61,6 +61,10 @@ function Home() {
               </div>
             </div>
           )
+        } else if(dat[0].toLowerCase() === 'user'){
+          <div>
+            <p>dat[2]</p>
+          </div>
         }
       })}
       {!data.length > 0 &&<div className='loadError'>

@@ -51,18 +51,32 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       case "proposal":
         paths = ['//*[@id="bodyCell"]/div[1]/div[1]/div[1]/h2', '//*[@id="ep"]/div[2]/div[15]/table/tbody/tr[1]/td[2]', '//*[@id="ep"]/div[2]/div[5]/table/tbody/tr[7]/td[2]']
         break;
+      case "user":
+        paths = ['//*[@id="bodyCell"]/div[1]/div[1]/div[1]/h2','//*[@id="ep"]/div[2]/div[2]/table/tbody/tr[3]/td[4]/a', '//*[@id="ep"]/div[2]/div[2]/table/tbody/tr[6]/td[2]','//*[@id="_RelatedPermsetAssignmentList_body"]/table']
+        break;
     }
 
     let opportunityURL = window.location.href
-    let data = paths.map((path) => {
-      return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText
-    })
+
+    let data;
+
+    if(pageType.toLowerCase() === 'user'){
+      data = paths.map((path) => {
+        return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null)
+      })  
+    } else {
+      data = paths.map((path) => {
+        return document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText
+      })
+    }
 
 
       let opptyInfo = [pageType, opportunityURL, data[0], data[1], data[2]]
       let contractInfo = [pageType, opportunityURL, data[0], data[1], data[2], data[3], data[4], data[5], data[6]]
       let projectInfo = [pageType, opportunityURL, data[0], data[1], data[2]]
       let proposalInfo = [pageType, opportunityURL, data[0], data[1], data[2]]
+      let userInfo = [pageType, opportunityURL, data[0], data[1], data[2]]
+
 
       switch(request.greeting === "ping" && pageType.toLowerCase()){
         case 'opportunity':
