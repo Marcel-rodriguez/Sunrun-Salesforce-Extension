@@ -1,4 +1,9 @@
-const isSalesforcePage = window.location.href.toString().includes('force' || 'wfproject' || 'salesforce')
+const activeURL = window.location.href.toString()
+const pattern = /sunrun.my.salesforce/
+const pattern2 = /visual.force.com/
+
+let isSalesforcePage = pattern.test(activeURL) || pattern2.test(activeURL)
+console.log(isSalesforcePage, activeURL)
 
 chrome.storage.sync.get('salesforceColor', (resp) => {
   for (key in resp){
@@ -54,18 +59,23 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     })
 
 
-      let opptyInfo = [ pageType, opportunityURL, data[0], data[1], data[2]]
+      let opptyInfo = [pageType, opportunityURL, data[0], data[1], data[2]]
       let contractInfo = [pageType, opportunityURL, data[0], data[1], data[2], data[3], data[4], data[5], data[6]]
       let projectInfo = [pageType, opportunityURL, data[0], data[1], data[2]]
       let proposalInfo = [pageType, opportunityURL, data[0], data[1], data[2]]
 
-        if (request.greeting === "ping" && pageType.toLowerCase() === 'opportunity'){
-            sendResponse({farewell: "pong", data: opptyInfo});
-        } else if(request.greeting === "ping" && pageType.toLowerCase() === 'service contract'){
+      switch(request.greeting === "ping" && pageType.toLowerCase()){
+        case 'opportunity':
+          sendResponse({farewell: "pong", data: opptyInfo});
+          break;
+        case 'service contract':
           sendResponse({farewell: "pong", data: contractInfo});
-        } else if(request.greeting === "ping" && pageType.toLowerCase() === 'project'){
+          break;
+        case 'project':
           sendResponse({farewell: "pong", data: projectInfo});
-        } else if(request.greeting === "ping" && pageType.toLowerCase() === 'proposal'){
+          break;
+        case 'proposal':
           sendResponse({farewell: "pong", data: proposalInfo});
-        }
+          break;
+      }
 })
