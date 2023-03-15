@@ -13,11 +13,9 @@ chrome.storage.sync.get('salesforceColor', (resp) => {
 })
 
 chrome.storage.sync.onChanged.addListener(async (response) => {
-  for (key in response){
-    let color = response[key]
+    let color = response['salesforceColor']
     if(isSalesforcePage)
     document.body.style.backgroundColor = color.newValue.toString()
-  }
 })
 
 

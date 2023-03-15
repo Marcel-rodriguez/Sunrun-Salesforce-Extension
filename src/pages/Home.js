@@ -1,10 +1,12 @@
-import React, {useState, useEffect, useRef} from 'react'
-import { Button } from '@mui/material'
+import React, {useState, useEffect, useRef, useContext} from 'react'
+import { Button, Checkbox } from '@mui/material'
+import { PopupContext } from '../context/popupContext';
 
 
 function Home() {
   const [data, setData] = useState([])
   const pref = useRef();
+  const {isSpacingChecked} = useContext(PopupContext)
 
   useEffect(() => {
       getData().then((resp) => {
@@ -20,9 +22,12 @@ function Home() {
   }
 
   function getRef(){
-    let info = pref.current.outerText
-    navigator.clipboard.writeText(info)
+    let info = pref.current.innerText
+    !isSpacingChecked ? navigator.clipboard.writeText(info): navigator.clipboard.writeText(info.split(/\n\s/).join(';').replaceAll(';', '\n'))
   }
+
+
+
   
   return (
     <div className='homeContainer'>
@@ -38,6 +43,7 @@ function Home() {
               <p>Screenshot of error (type out information in SS): </p>
               <p>What is the user/rep trying to accomplish?:</p>
               <p>Troubleshooting steps taken:</p>
+              <br/>
               <p>T - Salesforce: </p>
               <p>*Clarify whether this is an issue with Brightpath, Salesforce, or SPLat*</p>
               </div>
@@ -54,7 +60,6 @@ function Home() {
               <p>Name: {dat[3]} </p>
               <p>Address with Zip Code: {dat[5]} {dat[6]}, {dat[7]} {dat[8]}</p>
               <p>Account #: {dat[2]}</p>
-              <br />
               <br />
               <p>T - MySunrun:</p> 
               <p>Escalating to Tier II</p>
