@@ -69,7 +69,7 @@ function Home() {
       })}
       {!data.length > 0 &&<div className='loadError'>
         <h3>Uh Oh! Data Not Found</h3>
-        <p>Please load an Opportunity, a Project, or a Service Contract page in Salesforce. </p>
+        <p>Please load an Opportunity, a Project, a Service Contract, or a proposal in Salesforce. </p>
         </div>}
               <Button onClick={() => getRef()} variant="contained" size="small" style={{
                   marginBottom: ".5rem"
