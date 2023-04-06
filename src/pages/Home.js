@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef, useContext} from 'react'
 import { Button, Checkbox } from '@mui/material'
 import { PopupContext } from '../context/popupContext';
-
+import axios from 'axios';
 
 function Home() {
   const [data, setData] = useState([])
@@ -26,9 +26,6 @@ function Home() {
     !isSpacingChecked ? navigator.clipboard.writeText(info): navigator.clipboard.writeText(info.split(/\n\s/).join(';').replaceAll(';', '\n'))
   }
 
-
-
-  
   return (
     <div className='homeContainer'>
       {data.length > 0 && data.map((dat) => {
@@ -37,8 +34,8 @@ function Home() {
             <div key={dat[0]} className='customerInfo'>
               <div className='pageType'>Currently viewing: {dat[0]}</div>
               <div ref={pref} className='popupInfo'>
-              <p>Oppty/Project Number: {dat[2]}</p>
-              <p>Link for proposal and oppty: {dat[1]} </p>
+              <p>Oppty/Project Number: {dat[2]} <br /> {dat[5]}</p>
+              <p>Link for proposal and oppty: {dat[1]} <br /> {dat[6]} </p>
               <p>Customer name and Address: {dat[3]} {dat[4]}</p>
               <p>Screenshot of error (type out information in SS): </p>
               <p>What is the user/rep trying to accomplish?:</p>
@@ -54,8 +51,8 @@ function Home() {
             <div key={dat[0]} className='customerInfo'>
               <div className='pageType'>Currently viewing: {dat[0]}</div>
               <div ref={pref} className='popupInfo'>
-              <p>Oppty/Project Number: {dat[2]} <br/>  
-                Link for proposal and oppty: {dat[1]}  <br/>    
+              <p>Oppty/Project Number: {dat[2]} {dat[5]} <br/>  
+                Link for proposal and oppty: {dat[1]} {dat[6]} <br/>    
                 Customer name and Address: {dat[3]} {dat[4]}  <br/>   
                 Screenshot of error (type out information in SS):  <br/>    
                 What is the user/rep trying to accomplish?:   <br/> 
@@ -102,10 +99,6 @@ function Home() {
               </div>
             </div>
           )
-        } else if(dat[0].toLowerCase() === 'user'){
-          <div>
-            <p>dat[2]</p>
-          </div>
         }
       })}
       {!data.length > 0 &&<div className='loadError'>
