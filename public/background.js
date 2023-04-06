@@ -5,14 +5,17 @@ let menuInfo = {
     title: "Search salesforce for \"%s\"",
     contexts: ["selection"]
 }
+
 chrome.contextMenus.create(menuInfo)
 
 chrome.contextMenus.onClicked.addListener((clickedMenu) => {
+
     if(clickedMenu.menuItemId === menuInfo.id && clickedMenu.selectionText.length > 0){
         const searchTerm = clickedMenu.selectionText.trim()
-            searchInSalesforce(searchTerm, getCurrentTab())
+        searchInSalesforce(searchTerm, getCurrentTab())
     }
 })
+
 
 async function getCurrentTab(){
     let queryOptions = {
