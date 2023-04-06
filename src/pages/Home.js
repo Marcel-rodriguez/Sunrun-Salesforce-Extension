@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useRef, useContext} from 'react'
 import { Button, Checkbox } from '@mui/material'
 import { PopupContext } from '../context/popupContext';
-import axios from 'axios';
 
 function Home() {
   const [data, setData] = useState([])
@@ -34,7 +33,7 @@ function Home() {
             <div key={dat[0]} className='customerInfo'>
               <div className='pageType'>Currently viewing: {dat[0]}</div>
               <div ref={pref} className='popupInfo'>
-              <p>Oppty/Project Number: {dat[2]} <br /> {dat[5]}</p>
+              <p>Oppty/Project Number: {dat[2]} <br /> {dat[5]} {dat[7]}</p>
               <p>Link for proposal and oppty: {dat[1]} <br /> {dat[6]} </p>
               <p>Customer name and Address: {dat[3]} {dat[4]}</p>
               <p>Screenshot of error (type out information in SS): </p>
@@ -51,14 +50,13 @@ function Home() {
             <div key={dat[0]} className='customerInfo'>
               <div className='pageType'>Currently viewing: {dat[0]}</div>
               <div ref={pref} className='popupInfo'>
-              <p>Oppty/Project Number: {dat[2]} {dat[5]} <br/>  
+              <p>Oppty/Project Number: {dat[2]} {dat[5]} {dat[7]}<br/>  
                 Link for proposal and oppty: {dat[1]} {dat[6]} <br/>    
                 Customer name and Address: {dat[3]} {dat[4]}  <br/>   
                 Screenshot of error (type out information in SS):  <br/>    
                 What is the user/rep trying to accomplish?:   <br/> 
                 Troubleshooting steps taken: <br/>
                 <br/>   
-                <br/>
                 T - Salesforce: <br/>     
                 *Clarify whether this is an issue with Brightpath, Salesforce, or SPLat*</p>
               </div>

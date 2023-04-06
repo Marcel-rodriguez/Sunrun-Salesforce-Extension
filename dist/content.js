@@ -46,6 +46,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     let opptyProposal
     let opptyProposalUrl
     let opptyProject
+    let opptyLink
+    let opptyName
 
 
       let hasProject = false
@@ -72,12 +74,21 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       if(pageType.toLowerCase() === 'proposal'){
         const opptyResult = document.getElementsByClassName('dataCol col02')
         Object.values(opptyResult).forEach((o) => {
-          if(o.firstChild.id){
-            console.log(o.firstChild)
+          let pattern = /0066Q000029/
+          if(pattern.test(o.firstChild.id)){
+            opptyName = o.firstChild.innerText
+            opptyLink = o.firstChild.href
+          } else {
+            null
           }
         })
       }
 
+      if(pageType.toLowerCase() === 'project'){
+        let pageLinks = document.getElementsByClassName('lookup-link')
+        opptyLink = Object.values(pageLinks)[1].href
+        opptyName = Object.values(pageLinks)[1].innerText
+      }
       
       if(hasProject){
         opptyProposal = pResultArr[0]
@@ -88,8 +99,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         opptyProposalUrl = ''
         opptyProject = ''
       }
-      console.log(pResultArr[0], pResultUrl[0])
-
 
     let paths;
 
@@ -128,8 +137,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
       let opptyInfo = [pageType, opportunityURL, data[0], data[1], data[2], opptyProject, opptyProposalUrl]
       let contractInfo = [pageType, opportunityURL, data[0], data[1], data[2], data[3], data[4], data[5], data[6]]
-      let projectInfo = [pageType, opportunityURL, data[0], data[1], data[2], opptyProject]
-      let proposalInfo = [pageType, opportunityURL, data[0], data[1], data[2]]
+      let projectInfo = [pageType, opportunityURL, data[0], data[1], data[2], opptyProject, opptyLink, opptyName]
+      let proposalInfo = [pageType, opportunityURL, data[0], data[1], data[2], opptyProject, opptyLink, opptyName]
       // let userInfo = [pageType, opportunityURL, data[0], data[1], data[2]]
 
 
