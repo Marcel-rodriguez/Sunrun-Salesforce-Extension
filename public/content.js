@@ -48,6 +48,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     let opptyProject
     let opptyLink
     let opptyName
+    let proposalLink
 
 
       let hasProject = false
@@ -88,6 +89,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         let pageLinks = document.getElementsByClassName('lookup-link')
         opptyLink = Object.values(pageLinks)[1].href
         opptyName = Object.values(pageLinks)[1].innerText
+        proposalLink = Object.values(pageLinks)[2].href
       }
       
       if(hasProject){
@@ -137,7 +139,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 
       let opptyInfo = [pageType, opportunityURL, data[0], data[1], data[2], opptyProject, opptyProposalUrl]
       let contractInfo = [pageType, opportunityURL, data[0], data[1], data[2], data[3], data[4], data[5], data[6]]
-      let projectInfo = [pageType, opportunityURL, data[0], data[1], data[2], opptyProject, opptyLink, opptyName]
+      let projectInfo = [pageType, proposalLink, data[0], data[1], data[2], opptyProject, opptyLink, opptyName]
       let proposalInfo = [pageType, opportunityURL, data[0], data[1], data[2], opptyProject, opptyLink, opptyName]
       // let userInfo = [pageType, opportunityURL, data[0], data[1], data[2]]
 
