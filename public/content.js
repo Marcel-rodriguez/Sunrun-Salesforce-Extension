@@ -1,9 +1,14 @@
-const activeURL = window.location.href.toString()
+const activeURL = window.location.href
 const pattern = /sunrun.my.salesforce/
 const pattern2 = /visual.force.com/
+const pattern3 = /^https:\/\/vivintsolar\.service-now\.com\/now\/sow\/record\/incident/
+const pattern4 = /^https:\/\/vivintsolar\.service-now\.com\/now\/sow/
 
 let isSalesforcePage = pattern.test(activeURL) || pattern2.test(activeURL)
-console.log(isSalesforcePage, activeURL)
+// console.log(isSalesforcePage, activeURL)
+
+let isSOWPage = pattern4.test(activeURL)
+// console.log(isSOWPage, activeURL,"SOW PAGE")
 
 chrome.storage.sync.get('salesforceColor', (resp) => {
   for (key in resp){
@@ -29,7 +34,7 @@ let selections = [...document.querySelectorAll('table tbody tr')].map((row) => {
 console.log('Extension Loaded')
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if(request.greeting === 'ping'){
+  if(request.greeting === 'ping' && isSalesforcePage){
 
     let pageType;
     let currentTab = request.currentTab.url.toString()
@@ -71,8 +76,9 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         }
       })
 
+
       // get oppty name for proposals
-      if(pageType.toLowerCase() === 'proposal'){
+      if(pageType.toLowerCase() === 'proposal' && hasProject){
         const opptyResult = document.getElementsByClassName('dataCol col02')
         Object.values(opptyResult).forEach((o) => {
           let pattern = /0066Q000029/
@@ -83,6 +89,10 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
             null
           }
         })
+      } else if(pageType.toLowerCase() === 'proposal' && !hasProject){
+        const path = '//*[contains (@id, "lookup0066Q000029")]'
+        opptyName = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.innerText
+        opptyLink = document.evaluate(path, document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue.href
       }
 
       if(pageType.toLowerCase() === 'project'){
@@ -143,7 +153,6 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
       let proposalInfo = [pageType, opportunityURL, data[0], data[1], data[2], opptyProject, opptyLink, opptyName]
       // let userInfo = [pageType, opportunityURL, data[0], data[1], data[2]]
 
-
       switch(pageType.toLowerCase()){
         case 'opportunity':
           sendResponse({farewell: "pong", data: opptyInfo});
@@ -158,5 +167,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
           sendResponse({farewell: "pong", data: proposalInfo});
           break;
       }
+  } else if(request.greeting === 'ping' && isSOWPage){
+    sendResponse({farewell: "SOWPAGE", templates: ['TEMPLATES']})
   }
 })

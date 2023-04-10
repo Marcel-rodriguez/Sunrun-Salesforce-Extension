@@ -17,6 +17,9 @@ function Home() {
   async function getData(){
       const [tab] = await chrome.tabs.query({active: true, lastFocusedWindow: true});
       let response = await chrome.tabs.sendMessage(tab.id, {greeting: msg, currentTab: tab})
+      if(response.farewell === 'SOWPAGE'){
+        return [response.templates]
+      }
       return [response.data]
   }
 
@@ -97,6 +100,10 @@ function Home() {
               </div>
             </div>
           )
+        } else if(dat[0].toLowerCase === 'templates'){
+          <div>
+            <p>THIS IS SOW PAGE</p>
+          </div>
         }
       })}
       {!data.length > 0 &&<div className='loadError'>
